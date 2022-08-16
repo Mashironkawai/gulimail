@@ -10,15 +10,23 @@ spring:
     nacos:
       discovery:
         server-addr: localhost:8848
+    alicloud:
+      access-key: LTAI5tCobhppRfGKAfQHd2Cw
+      secret-key: wwjb3RdcT4eALmw1D7jq1QeT4RqUEP
+      oss:
+        endpoint: https://oss-cn-hangzhou.aliyuncs.com
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   global-config:
     db-config:
       id-type: auto
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
 
 server:
   port: 10001
+
 
 management:
   health:

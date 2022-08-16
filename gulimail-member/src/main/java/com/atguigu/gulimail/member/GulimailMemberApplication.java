@@ -12,6 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 /**
  * @author Administrator
  */
+
 @EnableFeignClients(basePackages = "com.atguigu.gulimail.member.feign")
 @EnableDiscoveryClient
 @MapperScan("com.atguigu.gulimail.member.dao")

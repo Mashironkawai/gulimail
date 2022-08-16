@@ -14,6 +14,7 @@ package com.atguigu.gulimail.product;
 //import com.atguigu.gulimail.product.vo.skuItemvo.SkuItemVo;
 //import com.atguigu.gulimail.product.vo.skuItemvo.SpuItemAttrGroupVo;
 //import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.aliyun.oss.*;
 import com.atguigu.gulimail.product.entity.BrandEntity;
 import com.atguigu.gulimail.product.service.BrandService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -28,6 +29,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -37,20 +41,48 @@ import java.util.concurrent.ExecutionException;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class GulimailProductApplicationTests {
-
 	@Autowired
 	private BrandService brandService;
 
+	@Autowired
+	OSSClient ossClient;
+
+	@Test
+	public void test(){
+//		// Endpoint以华东1（杭州）为例，其它Region请按实际情况填写。
+//		String endpoint = "https://oss-cn-hangzhou.aliyuncs.com";
+//		// 阿里云账号AccessKey拥有所有API的访问权限，风险很高。强烈建议您创建并使用RAM用户进行API访问或日常运维，请登录RAM控制台创建RAM用户。
+//		String accessKeyId = "LTAI5tCobhppRfGKAfQHd2Cw";
+//		String accessKeySecret = "wwjb3RdcT4eALmw1D7jq1QeT4RqUEP";
+//		// 填写Bucket名称，例如examplebucket。
+//		String bucketName = "gulimall-mashiros";
+//		// 填写Object完整路径，完整路径中不能包含Bucket名称，例如exampledir/exampleobject.txt。
+//		String objectName = "h.png";
+//		// 填写本地文件的完整路径，例如D:\\localpath\\examplefile.txt。
+//		// 如果未指定本地路径，则默认从示例程序所属项目对应本地路径中上传文件流。
+//		String filePath= "F:\\大姐\\h.png";
+//
+//		// 创建OSSClient实例。
+//		OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+
+		// 上传文件流。
+		InputStream inputStream = null;
+		try {
+			inputStream = new FileInputStream("F:\\大姐\\2.png");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		ossClient.putObject("gulimall-mashiros", "2.png", inputStream);
+		System.out.println("上传完成");
+
+// 关闭OSSClient。
+		ossClient.shutdown(); }
+
+
+
 	@Test
 	public void contextloads(){
-//		BrandEntity brandEntity = new BrandEntity();
-//		brandEntity.setName("华为");
-//		brandService.save(brandEntity);
-//		System.out.println("保存成功****");
-//
-//		brandEntity.setBrandId(1L);
-//		brandEntity.setDescript("小米");
-//		brandService.updateById(brandEntity);
+
 		List<BrandEntity> list = brandService.list(new QueryWrapper<BrandEntity>().eq("brand_id", "1L"));
 		list.forEach((item)->{
 			System.out.println(item);
@@ -84,65 +116,6 @@ public class GulimailProductApplicationTests {
 //
 //	@Autowired
 //	private SkuSaleAttrValueDao skuSaleAttrValueDao;
-//
-//	@Test
-//	void testRedis(){
-//		ValueOperations<String, String> ops = stringRedisTemplate.opsForValue();
-//		ops.set("hello","world"+ UUID.randomUUID().toString());
-//		String s = ops.get("hello");
-//		System.out.println("保存的数据:"+s);
-//	}
-//
-//	@Test
-//	void contextLoads() {
-//		BrandEntity brandEntity = new BrandEntity();
-//		brandEntity.setName("华为");
-//		brandService.save(brandEntity);
-//		System.out.println("保存成功...");
-//	}
-//
-//	@Test
-//	void text(){
-//		Long[] path = categoryService.findCatelogPath(302L);
-//		//System.out.println(path);
-//		log.info("完整路径:{}", Arrays.asList(path));
-//	}
-//
-//	@Test
-//	void text2(){
-//		List<AttrEntity> list = attrService.getRelationAttr(100L);
-//		System.out.println(list);
-//	}
-//
-//	@Test
-//	void text3(){
-//		List<AttrAttrgroupRelationEntity> entities = relation.selectList(new QueryWrapper<AttrAttrgroupRelationEntity>().eq("attr_group_id", 12L));
-//		System.out.println(entities);
-//	}
-//
-//	@Test
-//	void test4(){
-//		List<SpuItemAttrGroupVo> attrGroupWithAttrsBySpuId = attrGroupDao.getAttrGroupWithAttrsBySpuId(100L, 225L);
-//		System.out.println(attrGroupWithAttrsBySpuId);
-//	}
-//
-//	@Test
-//	void test5(){
-//		List<SkuItemSaleAttrsVo> saleAttrsBySpuId = skuSaleAttrValueDao.getSaleAttrsBySpuId(5L);
-//		System.out.println(saleAttrsBySpuId);
-//	}
-//	@Test
-//	void test6() throws ExecutionException, InterruptedException {
-//		SkuItemVo item = skuInfoService.item(5L);
-//		System.out.println(item);
-//	}
-
-	//**
-//	@Test
-//	void testUpload()throws FileNotFoundException{
-//		InputStream inputStream = new FileInputStream("D:\\picture\\03.jpg");
-//		ossClient.putObject("gulimall-adverseq","test03.jpg",inputStream);
-//	}
 //
 //	@Test
 //	void testUpload02() throws FileNotFoundException{
